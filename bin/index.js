@@ -26,6 +26,7 @@ const processFromFilesStream = async (stream, dist) => {
   if (dist.substr(-1) !== '/' && dist.substr(-1) !== '\\') {
     dist += path.sep
   }
+  const models = []
   for await (let entry of stream) {
     if (entry instanceof Buffer) {
       entry = entry.toString()
@@ -33,12 +34,26 @@ const processFromFilesStream = async (stream, dist) => {
 
     const json = require(entry)
     const name = jsonToInterface.getNameFromFilePath(entry)
-    const model = jsonToInterface.jsonToInterface(json, name)
-    fs.writeFileSync(`${dist}${jsonToInterface.toSnakeCase(name)}.ts`, model)
+    const [modelName, model] = jsonToInterface.jsonToInterface(json, name)
+    fs.writeFileSync(`${dist}${jsonToInterface.toFileCase(name)}.ts`, model)
+    models.push({
+      import: `'./${jsonToInterface.toFileCase(name)}'`,
+      name: modelName
+    })
 
     // @ts-ignore
     console.log(chalk.default(`Processed file: ${chalk.green(entry)}`))
   }
+
+  let indexContent = ''
+  models.forEach((model) => {
+    indexContent += `export {${model.name}} from ${model.import}\n`
+  })
+
+  fs.writeFileSync(`${dist}index.ts`, indexContent)
+
+  // @ts-ignore
+  console.log(chalk.default(`Processed file: ${chalk.green('index.ts')}`))
 
   console.log(
     boxen('done!', {

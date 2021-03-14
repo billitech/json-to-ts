@@ -31,6 +31,25 @@ export function toSnakeCase(value: string) {
     .join('')
 }
 
+export function toFileCase(value: string) {
+  return value
+    .split('')
+    .map((character) => {
+      if (
+        character == character.toUpperCase() &&
+        character != '-' &&
+        character != '_'
+      ) {
+        return '-' + character.toLowerCase()
+      } else if (character == '_') {
+        return '-'
+      } else {
+        return character
+      }
+    })
+    .join('')
+}
+
 export function capitalize(value: string) {
   return value.charAt(0).toUpperCase() + value.slice(1)
 }
@@ -66,7 +85,7 @@ export function getType(
 
       importsMap.set(
         capitalize(value),
-        `import ${capitalize(value)} from './${toSnakeCase(value)}'`
+        `import {${capitalize(value)}} from './${toSnakeCase(value)}'`
       )
       return `${capitalize(value)}[]`
     }
@@ -79,7 +98,7 @@ export function getType(
       value = toCamelCase(value)
       importsMap.set(
         capitalize(value),
-        `import ${capitalize(value)} from './${toSnakeCase(value)}'`
+        `import {${capitalize(value)}} from './${toSnakeCase(value)}'`
       )
       return capitalize(value)
     }

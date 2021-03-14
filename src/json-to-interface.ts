@@ -22,7 +22,7 @@ export function jsonToInterface(json: Object, name: string) {
     outputString += '\n'
   }
 
-  outputString += `export default interface ${nameCapitalize} { \n`
+  outputString += `export interface ${nameCapitalize} { \n`
 
   attrArray.forEach((attr) => {
     outputString += `  ${attr}\n`
@@ -30,5 +30,5 @@ export function jsonToInterface(json: Object, name: string) {
 
   outputString += '}'
 
-  return outputString
+  return [nameCapitalize, outputString]
 }
