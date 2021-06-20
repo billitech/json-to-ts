@@ -3,7 +3,9 @@ export function getNameFromFilePath(filepath: string) {
 }
 
 function isBuiltInType(type: string): boolean {
-  return ['number', 'string', 'array', 'object'].includes(type)
+  return ['number', 'string', 'unknown[]', 'boolean', 'unknown'].includes(
+    type
+  )
 }
 
 export function toCamelCase(value: string) {
@@ -59,20 +61,19 @@ export function getType(
   importsMap: Map<string, string>,
   tag: string = '$'
 ): string {
+  if (typeof value == 'boolean') {
+    return 'boolean'
+  }
   if (typeof value == 'number') {
     return 'number'
   }
 
   if (Array.isArray(value)) {
-    return 'array'
-  }
-
-  if (Array.isArray(value)) {
-    return 'array'
+    return 'unknown[]'
   }
 
   if (value !== null && typeof value === 'object') {
-    return 'object'
+    return 'unknown'
   }
 
   if (typeof value == 'string') {
@@ -85,7 +86,7 @@ export function getType(
 
       importsMap.set(
         capitalize(value),
-        `import {${capitalize(value)}} from './${toSnakeCase(value)}'`
+        `import {${capitalize(value)}} from './${toFileCase(value)}'`
       )
       return `${capitalize(value)}[]`
     }
@@ -98,7 +99,7 @@ export function getType(
       value = toCamelCase(value)
       importsMap.set(
         capitalize(value),
-        `import {${capitalize(value)}} from './${toSnakeCase(value)}'`
+        `import {${capitalize(value)}} from './${toFileCase(value)}'`
       )
       return capitalize(value)
     }
