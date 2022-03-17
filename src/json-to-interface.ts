@@ -1,3 +1,4 @@
+import { type } from 'os'
 import { capitalize, getType, toCamelCase } from './utils'
 
 export function jsonToInterface(json: Object, name: string) {
@@ -6,8 +7,16 @@ export function jsonToInterface(json: Object, name: string) {
   const attrArray = new Array<string>()
 
   for (const [key, value] of Object.entries(json)) {
-    const type = getType(value, importsMap)
-    attrArray.push(`readonly ${key}: ${type}`)
+    if (value === null) {
+      if (key.endsWith('?')) {
+        attrArray.push(`readonly ${key}: string`)
+      } else {
+        attrArray.push(`readonly ${key}?: string`)
+      }
+    } else {
+      const type = getType(value, importsMap)
+      attrArray.push(`readonly ${key}: ${type}`)
+    }
   }
 
   let outputString = ''
