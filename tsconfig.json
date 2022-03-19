@@ -6,6 +6,7 @@
     "lib": ["esnext", "dom"],
     "strict": true,
     "sourceMap": true,
+    "esModuleInterop": true,
     "declaration": true,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,

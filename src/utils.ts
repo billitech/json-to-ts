@@ -10,19 +10,6 @@ function isBuiltInType(type: string): boolean {
   )
 }
 
-export function toSnakeCase(value: string) {
-  return value
-    .split('')
-    .map((character) => {
-      if (character == character.toUpperCase() && character != '_') {
-        return '_' + character.toLowerCase()
-      } else {
-        return character
-      }
-    })
-    .join('')
-}
-
 export function toFileCase(value: string) {
   return value
     .split('')
