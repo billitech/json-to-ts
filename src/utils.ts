@@ -1,3 +1,5 @@
+import camelCase from "lodash.camelcase"
+
 export function getNameFromFilePath(filepath: string) {
   return filepath.replace(/^.*(\\|\/|\:)/, '').split('.')[0]
 }
@@ -6,18 +8,6 @@ function isBuiltInType(type: string): boolean {
   return ['number', 'string', 'unknown[]', 'boolean', 'unknown'].includes(
     type
   )
-}
-
-export function toCamelCase(value: string) {
-  return value
-    .replace(/_/g, ' ')
-    .replace(/\s(.)/g, function ($1) {
-      return $1.toUpperCase()
-    })
-    .replace(/\s/g, '')
-    .replace(/^(.)/, function ($1) {
-      return $1.toLowerCase()
-    })
 }
 
 export function toSnakeCase(value: string) {
@@ -82,7 +72,7 @@ export function getType(
       if (isBuiltInType(value)) {
         return `${value}[]`
       }
-      value = toCamelCase(value)
+      value = camelCase(value)
 
       importsMap.set(
         capitalize(value),
@@ -96,7 +86,7 @@ export function getType(
       if (isBuiltInType(value)) {
         return `${value}`
       }
-      value = toCamelCase(value)
+      value = camelCase(value)
       importsMap.set(
         capitalize(value),
         `import {${capitalize(value)}} from './${toFileCase(value)}'`

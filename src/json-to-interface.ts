@@ -1,8 +1,8 @@
-import { type } from 'os'
-import { capitalize, getType, toCamelCase } from './utils'
+import { capitalize, getType } from './utils'
+import camelCase from "lodash.camelcase"
 
 export function jsonToInterface(json: Object, name: string) {
-  const nameCapitalize = capitalize(toCamelCase(name))
+  const nameCapitalize = capitalize(camelCase(name))
   const importsMap = new Map<string, string>()
   const attrArray = new Array<string>()
 
