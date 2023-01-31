@@ -1,6 +1,6 @@
 {
   "name": "@billitech/json-to-ts",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "A console utility to convert json to typescript interfaces",
   "keywords": [
     "json",

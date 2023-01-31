@@ -47,7 +47,7 @@ const processFromFilesStream = async (stream, dist) => {
 
   let indexContent = ''
   models.forEach((model) => {
-    indexContent += `export {${model.name}} from ${model.import}\n`
+    indexContent += `export type {${model.name}} from ${model.import}\n`
   })
 
   fs.writeFileSync(`${dist}index.ts`, indexContent)
