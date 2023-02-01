@@ -68,6 +68,20 @@ export function getType(
       return `${capitalize(value)}[]`
     }
 
+    if (value.startsWith(tag + 'readonly[]')) {
+      value = value.substring(tag.length + 10)
+      if (isBuiltInType(value)) {
+        return `readonly ${value}[]`
+      }
+      value = camelCase(value)
+
+      importsMap.set(
+        capitalize(value),
+        `import {${capitalize(value)}} from './${toFileCase(value)}'`
+      )
+      return `readonly ${capitalize(value)}[]`
+    }
+
     if (value.startsWith(tag)) {
       value = value.substring(tag.length)
       if (isBuiltInType(value)) {
